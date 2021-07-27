@@ -29,6 +29,9 @@ public class Client implements Serializable {
 	private String name;
 
 	private String phone;
+	
+	@Column(name="id_card")
+	private String idCard;
 
 	//bi-directional many-to-one association to Reservation
 	@OneToMany(mappedBy="client")
@@ -37,6 +40,24 @@ public class Client implements Serializable {
 	public Client() {
 	}
 
+	public Client(String address, String email, String lastName, String name, String phone, String idCard) {
+		super();
+		this.address = address;
+		this.email = email;
+		this.lastName = lastName;
+		this.name = name;
+		this.phone = phone;
+		this.idCard = idCard;
+	}
+
+	public String getIdCard() {
+		return idCard;
+	}
+
+	public void setIdCard(String idCard) {
+		this.idCard = idCard;
+	}
+	
 	public Integer getId() {
 		return this.id;
 	}
@@ -106,5 +127,13 @@ public class Client implements Serializable {
 
 		return reservation;
 	}
+
+	@Override
+	public String toString() {
+		return "Client [id=" + id + ", address=" + address + ", email=" + email + ", lastName=" + lastName + ", name="
+				+ name + ", phone=" + phone + ", idCard=" + idCard + ", reservations=" + reservations + "]";
+	}
+	
+	
 
 }

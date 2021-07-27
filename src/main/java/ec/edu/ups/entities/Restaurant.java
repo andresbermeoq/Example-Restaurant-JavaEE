@@ -35,6 +35,14 @@ public class Restaurant implements Serializable {
 	public Restaurant() {
 	}
 
+	public Restaurant(String address, Integer capacityNumber, String name, String phone) {
+		super();
+		this.address = address;
+		this.capacityNumber = capacityNumber;
+		this.name = name;
+		this.phone = phone;
+	}
+
 	public Integer getId() {
 		return this.id;
 	}
