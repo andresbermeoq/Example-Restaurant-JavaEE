@@ -30,12 +30,13 @@ public class ClienteResource {
 	public Response createClient(Client client) {
 		if (client != null) {
 			clientFacade.create(client);
-			return Response.status(Response.Status.CREATED)
+			return Response.status(Response.Status.CREATED).entity(client)
 					.header("Access-Control-Allow-Origin", "*")
 					.header("Access-Control-Allow-Headers", "origin,content-type, accept, authorization")
 					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE").build();
 		} else {
 			return Response.status(Response.Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*")
 					.header("Access-Control-Allow-Headers", "origin,content-type, accept, authorization")
 					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE").build();
 		}
@@ -48,6 +49,7 @@ public class ClienteResource {
 	public Response getClients() {
 		Jsonb jsonb = JsonbBuilder.create();
 		return Response.ok(jsonb.toJson(clientFacade.findAll()))
+				.header("Access-Control-Allow-Origin", "*")
 				.header("Access-Control-Allow-Headers", "origin,content-type, accept, authorization")
 				.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE").build();
 	}
