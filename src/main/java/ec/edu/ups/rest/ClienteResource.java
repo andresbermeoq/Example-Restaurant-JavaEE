@@ -5,6 +5,7 @@ import javax.ejb.EJB;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -29,9 +30,14 @@ public class ClienteResource {
 	public Response createClient(Client client) {
 		if (client != null) {
 			clientFacade.create(client);
-			return Response.status(Response.Status.CREATED).build();
+			return Response.status(Response.Status.CREATED)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Headers", "origin,content-type, accept, authorization")
+					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE").build();
 		} else {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return Response.status(Response.Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Headers", "origin,content-type, accept, authorization")
+					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE").build();
 		}
 		
 	}
@@ -41,7 +47,9 @@ public class ClienteResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getClients() {
 		Jsonb jsonb = JsonbBuilder.create();
-		return Response.ok(jsonb.toJson(clientFacade.findAll())).build();
+		return Response.ok(jsonb.toJson(clientFacade.findAll()))
+				.header("Access-Control-Allow-Headers", "origin,content-type, accept, authorization")
+				.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE").build();
 	}
 	
 
