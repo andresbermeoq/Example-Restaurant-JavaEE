@@ -20,5 +20,19 @@ public class ClientFacade extends AbstractFacade<Client> {
 	protected EntityManager getEntityManager() {
 		return em;
 	}
+	
+	public Client getClientbyIdCard(String cedula) {
+		String query = "SELECT c FROM Client c WHERE c.idCard = :cedula";
+		Client client = null;
+		
+		try {
+			client = (Client) em.createQuery(query)
+								.setParameter("cedula", cedula)
+								.getSingleResult();
+		} catch (Exception e) {
+			System.out.println("--> Error: ClientFacade: getClientbyIdCard: " + e.getMessage() );
+		}
+		return client;
+	}
 
 }

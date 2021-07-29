@@ -1,6 +1,8 @@
 package ec.edu.ups.entities;
 
 import java.io.Serializable;
+
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.util.List;
 

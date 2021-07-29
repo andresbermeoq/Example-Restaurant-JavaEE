@@ -24,12 +24,25 @@ public class RestaurantResource {
 	@Path("/crear")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createClient(Restaurant restaurant) {
+	public Response createRestaurant(Restaurant restaurant) {
 		if (restaurant != null) {
-			restaurantFacade.create(restaurant);
-			return Response.status(Response.Status.CREATED).build();
+			try {
+				restaurantFacade.create(restaurant);
+				return Response.status(Response.Status.CREATED).entity(restaurant)
+						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Headers", "origin,content-type, accept, authorization")
+						.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE").build();
+			} catch (Exception e) {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(500)
+						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Headers", "origin,content-type, accept, authorization")
+						.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE").build();
+			}
 		} else {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return Response.status(Response.Status.BAD_REQUEST).entity(400)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Headers", "origin,content-type, accept, authorization")
+					.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE").build();
 		}
 		
 	}
@@ -37,9 +50,12 @@ public class RestaurantResource {
 	@GET
 	@Path("/listar")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getClients() {
+	public Response getRestaurants() {
 		Jsonb jsonb = JsonbBuilder.create();
-		return Response.ok(jsonb.toJson(restaurantFacade.findAll())).build();
+		return Response.ok(jsonb.toJson(restaurantFacade.findAll()))
+				.header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Headers", "origin,content-type, accept, authorization")
+				.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE").build();
 	}
 	
 	

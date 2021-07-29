@@ -1,8 +1,12 @@
 package ec.edu.ups.entities;
 
 import java.io.Serializable;
+
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.*;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 
@@ -23,21 +27,31 @@ public class Reservation implements Serializable {
 	@Column(name="capacity_number")
 	private Integer capacityNumber;
 
-	@Temporal(TemporalType.DATE)
-	private Date date;
+	@JsonbDateFormat(value = "MM/dd/yyyy")
+	private LocalDate date;
 
-	private Time hour;
+	@JsonbDateFormat(value = "HH:mm")
+	private LocalTime hour;
 
 	//bi-directional many-to-one association to Client
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="user_id_card", referencedColumnName="id_card")
 	private Client client;
 
 	//bi-directional many-to-one association to Restaurant
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Restaurant restaurant;
 
 	public Reservation() {
+	}
+
+	public Reservation(Integer capacityNumber, LocalDate date, LocalTime hour, Client client, Restaurant restaurant) {
+		super();
+		this.capacityNumber = capacityNumber;
+		this.date = date;
+		this.hour = hour;
+		this.client = client;
+		this.restaurant = restaurant;
 	}
 
 	public Integer getId() {
@@ -56,19 +70,19 @@ public class Reservation implements Serializable {
 		this.capacityNumber = capacityNumber;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return this.date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
-	public Time getHour() {
+	public LocalTime getHour() {
 		return this.hour;
 	}
 
-	public void setHour(Time hour) {
+	public void setHour(LocalTime hour) {
 		this.hour = hour;
 	}
 
