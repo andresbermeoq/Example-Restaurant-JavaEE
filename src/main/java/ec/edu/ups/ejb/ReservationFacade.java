@@ -46,6 +46,29 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
 			return aforo;
 	}
 	
+	public List<Reservation> getClients(String idCard) {
+		List<Reservation> clientsList = new ArrayList<Reservation>();
+		
+		String query = "Select res FROM Reservation res, Client cli WHERE cli.idCard = :idCard";
+		
+		clientsList = em.createQuery(query, Reservation.class).setParameter("idCard", idCard).getResultList();
+		
+		return clientsList;
+	}
+	
+	public List<Reservation> getRestaurants(String name, LocalDate date) {
+		List<Reservation> restaurantsList = new ArrayList<Reservation>();
+		
+		String query = "Select res FROM Reservation res, Restaurant rest WHERE rest.name = :name AND res.date= :date";
+		
+		restaurantsList = em.createQuery(query, Reservation.class)
+							.setParameter("name", name)
+							.setParameter("date", date)
+							.getResultList();
+		
+		return restaurantsList;
+	}
+	
 	
 
 }

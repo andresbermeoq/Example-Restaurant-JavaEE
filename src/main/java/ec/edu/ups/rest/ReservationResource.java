@@ -3,7 +3,8 @@ package ec.edu.ups.rest;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.json.bind.Jsonb;
@@ -14,6 +15,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -73,6 +75,26 @@ public class ReservationResource {
 	public Response getReservations() {
 		Jsonb jsonb = JsonbBuilder.create();
 		return Response.ok(jsonb.toJson(reservationFacade.findAll())).build();
+	}
+	
+	@GET
+	@Path("/listarClients")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getReservationsClients(@QueryParam("idCard") String idCard) {
+		List<Reservation> getClientsReservations = new ArrayList<Reservation>();
+		getClientsReservations = reservationFacade.getClients(idCard);
+		Jsonb jsonb = JsonbBuilder.create();
+		return Response.ok(jsonb.toJson(getClientsReservations)).build();
+	}
+	
+	@GET
+	@Path("/listarRestaurants")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getReservationsRestaurants(@QueryParam("date") String date, @QueryParam("name") String name) {
+		List<Reservation> getReservationsReservations = new ArrayList<Reservation>();
+		getReservationsReservations = reservationFacade.getRestaurants(name, LocalDate.parse(date));
+		Jsonb jsonb = JsonbBuilder.create();
+		return Response.ok(jsonb.toJson(getReservationsReservations)).build();
 	}
 
 }
