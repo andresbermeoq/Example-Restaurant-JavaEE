@@ -1,7 +1,14 @@
 package ec.edu.ups.entities;
 
 import java.io.Serializable;
+
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.util.List;
 
 
@@ -12,6 +19,7 @@ import java.util.List;
 @Entity
 @Table(name="\"Restaurant\"")
 @NamedQuery(name="Restaurant.findAll", query="SELECT r FROM Restaurant r")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Restaurant implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -29,7 +37,8 @@ public class Restaurant implements Serializable {
 	private String phone;
 
 	//bi-directional many-to-one association to Reservation
-	@OneToMany(mappedBy="restaurant")
+	@JsonbTransient
+	@Transient
 	private List<Reservation> reservations;
 
 	public Restaurant() {
@@ -103,6 +112,12 @@ public class Restaurant implements Serializable {
 		reservation.setRestaurant(null);
 
 		return reservation;
+	}
+
+	@Override
+	public String toString() {
+		return "Restaurant [id=" + id + ", address=" + address + ", capacityNumber=" + capacityNumber + ", name=" + name
+				+ ", phone=" + phone + ", reservations=" + reservations + "]";
 	}
 
 }

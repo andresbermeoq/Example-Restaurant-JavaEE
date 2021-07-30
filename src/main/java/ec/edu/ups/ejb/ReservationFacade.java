@@ -1,5 +1,11 @@
 package ec.edu.ups.ejb;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,6 +25,25 @@ public class ReservationFacade extends AbstractFacade<Reservation> {
 	@Override
 	protected EntityManager getEntityManager() {
 		return em;
+	}
+	
+	public int getReservationByDate(String name, LocalDate date, LocalTime hour) {
+		String query = "SELECT res FROM Reservation res, Restaurant ret "
+					+ "	WHERE ret.name = :name"
+					+ "	AND res.date= :date AND res.hour= :hour";
+		
+		List<Reservation> reservations = new ArrayList<Reservation>();
+		int aforo = 0; 
+		reservations = em.createQuery(query,Reservation.class)
+										.setParameter("date", date)
+										.setParameter("hour", hour)
+										.setParameter("name", name) 
+										.getResultList();
+		
+			for(Reservation reservation: reservations) {
+					aforo = aforo + reservation.getCapacityNumber();
+			}
+			return aforo;
 	}
 	
 	

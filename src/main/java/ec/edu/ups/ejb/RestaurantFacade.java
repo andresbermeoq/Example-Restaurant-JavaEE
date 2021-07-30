@@ -21,5 +21,22 @@ public class RestaurantFacade extends AbstractFacade<Restaurant> {
 	protected EntityManager getEntityManager() {
 		return em;
 	}
+	
+	public Restaurant getNameRestaurant (Integer idRestaurant) {
+		String query = "SELECT re FROM Restaurant re WHERE re.id= :id";
+		Restaurant restaurant = null;
+		
+		try {
+			restaurant = (Restaurant) em.createQuery(query)
+										.setParameter("id", idRestaurant)
+										.getSingleResult();
+
+		} catch (Exception e) {
+			System.out.println("--> Error: RestaurantFacade: getNameRestaurant: " + e.getMessage() );
+		}
+		
+		return restaurant;
+		
+	}
 
 }

@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.util.List;
 
 
@@ -14,6 +19,7 @@ import java.util.List;
 @Entity
 @Table(name="\"Client\"")
 @NamedQuery(name="Client.findAll", query="SELECT c FROM Client c")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Client implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -35,8 +41,8 @@ public class Client implements Serializable {
 	@Column(name="id_card")
 	private String idCard;
 
-	//bi-directional many-to-one association to Reservation
-	@OneToMany(mappedBy="client")
+	@JsonbTransient
+	@Transient
 	private List<Reservation> reservations;
 
 	public Client() {
@@ -50,6 +56,18 @@ public class Client implements Serializable {
 		this.name = name;
 		this.phone = phone;
 		this.idCard = idCard;
+	}
+
+	public Client(String address, String email, String lastName, String name, String phone, String idCard,
+			List<Reservation> reservations) {
+		super();
+		this.address = address;
+		this.email = email;
+		this.lastName = lastName;
+		this.name = name;
+		this.phone = phone;
+		this.idCard = idCard;
+		this.reservations = reservations;
 	}
 
 	public String getIdCard() {

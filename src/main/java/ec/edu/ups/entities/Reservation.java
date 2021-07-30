@@ -4,10 +4,9 @@ import java.io.Serializable;
 
 import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.*;
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
+
 
 
 /**
@@ -34,12 +33,12 @@ public class Reservation implements Serializable {
 	private LocalTime hour;
 
 	//bi-directional many-to-one association to Client
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(name="user_id_card", referencedColumnName="id_card")
 	private Client client;
 
 	//bi-directional many-to-one association to Restaurant
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Restaurant restaurant;
 
 	public Reservation() {
@@ -100,6 +99,12 @@ public class Reservation implements Serializable {
 
 	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
+	}
+
+	@Override
+	public String toString() {
+		return "Reservation [id=" + id + ", capacityNumber=" + capacityNumber + ", date=" + date + ", hour=" + hour
+				+ ", client=" + client + ", restaurant=" + restaurant + "]";
 	}
 
 }
